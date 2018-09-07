@@ -1,0 +1,11 @@
+---
+agw:
+  image: nginx
+  volumes:
+   - ./agw.template:/etc/nginx/conf.d/agw.template
+  ports:
+   - "9999:80"
+  environment:
+   - NGINX_PORT=80
+   - HOST1=http://somehost.example:1234/
+  command: /bin/bash -c 'rm /etc/nginx/conf.d/*.conf; for f in /etc/nginx/conf.d/*.template; do envsubst < $$f > $${f//.template/.conf}; done && exec nginx -g "daemon off;"'
